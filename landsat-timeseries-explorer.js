@@ -199,7 +199,7 @@
   var appDerivedCodeLink = ui.Label({
     value: 'Código-fonte atualizado',
     style: {fontSize: '11px', color: '505050', margin: '-4px 8px 10px 8px'}, 
-    targetUrl: 'https://github.com/abimaelribeiro'
+    targetUrl: 'https://github.com/abimaelribeiro/ee-rgb-timeseries/blob/main/landsat-timeseries-explorer.js'
   });
   
   var appCodeLink = ui.Label({
