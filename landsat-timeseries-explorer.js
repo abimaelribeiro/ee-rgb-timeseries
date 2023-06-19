@@ -21,7 +21,7 @@
 
   // 1) Add a polygon through the assets tab
   // 2) Click run
-  // 3) Reset the parameters in the options according to your project
+  // 3) Reset the parameters according to your project
 
   // #############################################################################
   // ### ADDITIONAL PARAMS ###
@@ -36,7 +36,7 @@
   //Display params
   
   // View zoom on the map
-  var zoomLevelAoi = 8;
+  var zoomLevelAoi = 14;
   
   // Centroid color on the map
   var centroidColorParam = 'red';
@@ -49,14 +49,14 @@
   // ### CENTROID INFO ###
   // #############################################################################
 
-  //var centroide = table.geometry().centroid();
-  //var infoCentroide = ee.List(centroide.coordinates()).getInfo(0);
+  var centroid = table.geometry().centroid();
+  var centroideInfo = ee.List(centroid.coordinates()).getInfo(0);
   //console.log('Coordenada da área >>> Longitude: ' + infoCentroide[0] + ', Latitude: ' + infoCentroide[1]);
 
   // #############################################################################
   // ### IMPORT MODULES ###
   // #############################################################################
-  
+
   // RGB time series charting module: https://github.com/jdbcode/ee-rgb-timeseries
   var rgbTs = require('users/jstnbraaten/modules:rgb-timeseries/rgb-timeseries.js'); 
   
@@ -72,11 +72,11 @@
   var runUrl = ui.url.get('run', initRun);
   ui.url.set('run', runUrl);
   
-  var initLon = infoCentroide[0];
+  var initLon = centroideInfo[0];
   var lonUrl = ui.url.get('lon', initLon);
   ui.url.set('lon', lonUrl);
   
-  var initLat = infoCentroide[1];
+  var initLat = centroideInfo[1];
   var latUrl = ui.url.get('lat', initLat);
   ui.url.set('lat', latUrl);
   
@@ -112,7 +112,7 @@
   var thumbnailDimensionUrl = ui.url.get('thumbnailDimension', initThumbnailDimension);
   ui.url.set('thumbnailDimension', thumbnailDimensionUrl);
   
-  var initChipWidth = 20;
+  var initChipWidth = 2;
   var chipWidthUrl = ui.url.get('chipwidth', initChipWidth);
   ui.url.set('chipwidth', chipWidthUrl);
   
@@ -515,7 +515,7 @@
         var imgExpDrive = img.toFloat()
         
         var exportToDrive = Export.image.toDrive({
-            image: imgExpDrive.select("B6", "B5", "B3"),
+            image: imgExpDrive,
             description: imgExpDrive.id().getInfo(),
             scale: 30,
             region: aoiBox,
@@ -549,7 +549,7 @@
     // Add new polygon to the Map.
     var visParamsArea = visParamAreaMap;
     map.addLayer(aoiArea.style(visParamsArea));
-    
+
     // Add new point to the Map.
     map.addLayer(aoiCircle, {color: CENTROID_COLOR});
     map.centerObject(aoiCircle, zoomLevelAoi);
@@ -595,7 +595,7 @@
     renderGraphics(COORDS);
     submitButton.style().set('shown', false);
   }
-  
+
   /**
    * Sets URL params.
    */
